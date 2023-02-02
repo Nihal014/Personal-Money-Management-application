@@ -10,10 +10,12 @@ class expenseCategory extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView.separated(
         itemBuilder: (ctx, index) {
-        return  ListTile(title: Text('expense category $index'),trailing: IconButton(
-              onPressed: () {},
-              icon: Icon(Icons.delete),
-            ),);
+        return  Card(
+          child: ListTile(title: Text('expense category $index'),trailing: IconButton(
+                onPressed: () {},
+                icon: Icon(Icons.delete),
+              ),),
+        );
         },
         separatorBuilder: (ctx, index) {
           return SizedBox(

@@ -10,11 +10,13 @@ class incomeCategory extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView.separated(
         itemBuilder: (ctx, index) {
-          return ListTile(
-            title: Text('income category $index'),
-            trailing: IconButton(
-              onPressed: () {},
-              icon: Icon(Icons.delete),
+          return Card(
+            child: ListTile(
+              title: Text('income category $index'),
+              trailing: IconButton(
+                onPressed: () {},
+                icon: Icon(Icons.delete),
+              ),
             ),
           );
         },
