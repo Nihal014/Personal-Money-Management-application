@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/db/category_db.dart';
 import 'package:flutter_application_1/screens/category/expenseCategory.dart';
 import 'package:flutter_application_1/screens/category/incomeCategorylist.dart';
 
@@ -15,6 +16,12 @@ class _screenCategoryState extends State<screenCategory>
   @override
   void initState() {
     _tabController = TabController(length: 2, vsync: this);
+
+    Categorydb().getcategories().then((value) {
+      print('categories get');
+      print(value.toString());
+    });
+
     super.initState();
   }
 
@@ -22,17 +29,21 @@ class _screenCategoryState extends State<screenCategory>
     return Column(
       children: [
         TabBar(
-          unselectedLabelColor: Colors.grey,labelColor: Colors.black,
-          controller: _tabController,
-          tabs: [
-          Tab(
-            text: 'income',
-          ),
-          Tab(
-            text: 'expense',
-          )
-        ]),
-        Expanded(child: TabBarView(controller: _tabController, children: [incomeCategory(),expenseCategory()]))
+            unselectedLabelColor: Colors.grey,
+            labelColor: Colors.black,
+            controller: _tabController,
+            tabs: [
+              Tab(
+                text: 'income',
+              ),
+              Tab(
+                text: 'expense',
+              )
+            ]),
+        Expanded(
+            child: TabBarView(
+                controller: _tabController,
+                children: [incomeCategory(), expenseCategory()]))
       ],
     );
   }

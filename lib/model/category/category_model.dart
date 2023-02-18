@@ -2,14 +2,14 @@ import 'package:hive_flutter/adapters.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 part 'category_model.g.dart';
 
-@HiveType(typeId:2)
+@HiveType(typeId: 2)
 enum categoryType {
   @HiveField(0)
   income,
   @HiveField(1)
   expense,
 }
-  
+
 @HiveType(typeId: 1)
 class categoryModel {
   @HiveField(0)
@@ -27,4 +27,9 @@ class categoryModel {
     required this.type,
     this.isdeleted = false,
   });
+
+  @override
+  String toString() {
+    return '{$name  $type}';
+  }
 }

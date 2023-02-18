@@ -8,7 +8,7 @@ abstract class categorydbfunctions {
   Future<void> insertcategory(categoryModel value);
 }
 
-class categorydb implements categorydbfunctions {
+class Categorydb implements categorydbfunctions {
   @override
   Future<void> insertcategory(categoryModel value) async {
     final categorydb = await Hive.openBox<categoryModel>(categorydbname);
@@ -20,4 +20,6 @@ class categorydb implements categorydbfunctions {
     final categorydb = await Hive.openBox<categoryModel>(categorydbname);
     return categorydb.values.toList();
   }
+
+  
 }
