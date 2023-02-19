@@ -11,7 +11,7 @@ class incomeCategory extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-     return ValueListenableBuilder(
+    return ValueListenableBuilder(
         valueListenable: Categorydb().incomecategorylistnerdb,
         builder: (BuildContext ctx, List<categoryModel> newlist, Widget? _) {
           return ListView.separated(
@@ -21,8 +21,10 @@ class incomeCategory extends StatelessWidget {
                   child: ListTile(
                     title: Text(categ.name),
                     trailing: IconButton(
-                      onPressed: () {},
-                      icon:const Icon(Icons.delete),
+                      onPressed: () {
+                        Categorydb.instance.deletecategory(categ.id);
+                      },
+                      icon: const Icon(Icons.delete),
                     ),
                   ),
                 );
