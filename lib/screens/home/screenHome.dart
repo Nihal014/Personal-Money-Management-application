@@ -3,6 +3,7 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_application_1/db/category_db.dart';
 import 'package:flutter_application_1/model/category/category_model.dart';
+import 'package:flutter_application_1/screens/category/category_add_popup.dart';
 import 'package:flutter_application_1/screens/category/screenCategory.dart';
 import 'package:flutter_application_1/screens/home/widgets/bottomNavigation.dart';
 import 'package:flutter_application_1/screens/transaction/screenTransaction.dart';
@@ -34,11 +35,13 @@ class screenHome extends StatelessWidget {
           } else {
             print('add category');
           }
-          final sample = categoryModel(
-              id: DateTime.now().millisecond.toString(),
-              name: 'travel',
-              type: categoryType.expense);
-          Categorydb().insertcategory(sample);
+          showcategoryaddpopup(context);
+
+          // final sample = categoryModel(
+          //     id: DateTime.now().millisecond.toString(),
+          //     name: 'travel',
+          //     type: categoryType.expense);
+          // Categorydb().insertcategory(sample);
         },
         child: Icon(Icons.add),
       ),
