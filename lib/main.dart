@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/model/category/category_model.dart';
+import 'package:flutter_application_1/screens/add_transaction_page.dart';
 import 'package:flutter_application_1/screens/home/screenHome.dart';
 import 'package:hive_flutter/adapters.dart';
 
@@ -30,6 +31,9 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: screenHome(),
+      routes: {
+        screenaddtransactionpage.routeName:(ctc) =>const screenaddtransactionpage(), 
+      },
     );
   }
 }

@@ -11,7 +11,7 @@ abstract class categorydbfunctions {
 }
 
 class Categorydb implements categorydbfunctions {
-  Categorydb.internal();
+  Categorydb.internal();//check and study
   static Categorydb instance = Categorydb.internal();
 
   factory Categorydb() {
