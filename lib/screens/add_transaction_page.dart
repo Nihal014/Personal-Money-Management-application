@@ -19,6 +19,14 @@ class _screenaddtransactionpageState extends State<screenaddtransactionpage> {
   categoryType? selected_categorytype;
   categoryModel? selectedcategorymodel;
 
+  String? categoryid;
+
+  @override
+  void initState() {
+    selected_categorytype = categoryType.income;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,7 +42,6 @@ class _screenaddtransactionpageState extends State<screenaddtransactionpage> {
               decoration: InputDecoration(hintText: 'amount'),
               keyboardType: TextInputType.number,
             ),
-            
             TextButton.icon(
                 onPressed: () async {
                   final selected_date = await showDatePicker(
@@ -48,40 +55,56 @@ class _screenaddtransactionpageState extends State<screenaddtransactionpage> {
                     {
                       print(selected_date.toString());
                       setState(() {
-                        selecteddate=selected_date;
+                        selecteddate = selected_date;
                       });
-                      
                     }
                   }
                 },
                 icon: Icon(Icons.calendar_today),
-                label: Text(selecteddate==null?'select date':selecteddate.toString())),
-                
+                label: Text(selecteddate == null
+                    ? 'select date'
+                    : selecteddate.toString())),
             Row(
               children: [
                 Row(
                   children: [
                     Radio(
-                        value: false,
-                        groupValue: categoryType.income,
-                        onChanged: (newvalue) {}),
+                        value: categoryType.income,
+                        groupValue: selected_categorytype,
+                        onChanged: (newvalue) {
+                          setState(() {
+                            selected_categorytype = categoryType.income;
+                            categoryid = null;
+                          });
+                        }),
                     Text('income'),
                   ],
                 ),
                 Row(
                   children: [
                     Radio(
-                        value: false,
-                        groupValue: categoryType.expense,
-                        onChanged: (newvalue) {}),
+                        value: categoryType.expense,
+                        groupValue:
+                            selected_categorytype, //group value and value should match to highlieght radioo
+                        onChanged: (newvalue) {
+                          setState(() {
+                            selected_categorytype = categoryType.expense;
+                            categoryid = null;
+                          });
+                        }),
                     Text('expende'),
                   ],
                 ),
               ],
             ),
-            DropdownButton(
+            DropdownButton<String>(
                 hint: Text('select category'),
-                items: Categorydb().incomecategorylistnerdb.value.map((e) {
+                value: categoryid,
+                items: (selected_categorytype == categoryType.income
+                        ? Categorydb().incomecategorylistnerdb
+                        : Categorydb().expensecategorylistnerdb)
+                    .value
+                    .map((e) {
                   return DropdownMenuItem(
                     value: e.id,
                     child: Text(e.name),
@@ -89,6 +112,9 @@ class _screenaddtransactionpageState extends State<screenaddtransactionpage> {
                 }).toList(),
                 onChanged: (selectedvalue) {
                   print(selectedvalue);
+                  setState(() {
+                    categoryid = selectedvalue;
+                  });
                 }),
             ElevatedButton.icon(
                 onPressed: () {}, icon: Icon(Icons.check), label: Text('add'))
