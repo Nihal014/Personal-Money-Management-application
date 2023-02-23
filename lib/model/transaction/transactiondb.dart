@@ -8,6 +8,7 @@ const transaction_db_name = 'transactiondb';
 abstract class transactiondbfunctions {
   Future<void> addtransaction(transactionmodel obj);
   Future<List<transactionmodel>> getalltransactions();
+  Future<void> deletetransaction(String id);
 }
 
 class transactiondb implements transactiondbfunctions {
@@ -27,7 +28,7 @@ class transactiondb implements transactiondbfunctions {
 
   Future<void> refresh() async {
     final list = await getalltransactions();
-    list.sort((first,second)=>second.date.compareTo(first.date));
+    list.sort((first, second) => second.date.compareTo(first.date));
     transactionlistnotifier.value.clear();
     transactionlistnotifier.value.addAll(list);
     transactionlistnotifier.notifyListeners();
@@ -37,5 +38,12 @@ class transactiondb implements transactiondbfunctions {
   Future<List<transactionmodel>> getalltransactions() async {
     final db = await Hive.openBox<transactionmodel>(transaction_db_name);
     return db.values.toList();
+  }
+
+  @override
+  Future<void> deletetransaction(String id) async {
+    final db = await Hive.openBox<transactionmodel>(transaction_db_name);
+    await db.delete(id);
+    refresh();
   }
 }

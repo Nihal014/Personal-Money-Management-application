@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/db/category_db.dart';
 import 'package:flutter_application_1/model/category/category_model.dart';
 import 'package:flutter_application_1/model/transaction/transactiondb.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
 
 import '../../model/transaction/transaction_model.dart';
@@ -20,20 +21,35 @@ class screentransaction extends StatelessWidget {
             padding: const EdgeInsets.all(10),
             itemBuilder: (ctx, index) {
               final value = newlist[index];
-              return Card(
-                elevation: 0,
-                child: ListTile(
-                  leading: CircleAvatar(
-                      backgroundColor: value.type == categoryType.income
-                          ? Colors.green
-                          : Colors.red,
-                      radius: 45,
-                      child: Text(
-                        parsedate(value.date),
-                        textAlign: TextAlign.center,
-                      )),
-                  title: Text('Rs${value.amount}'),
-                  subtitle: Text(value.category.name),
+              return Slidable(
+                key: Key(value.id!),
+                startActionPane: ActionPane(
+                  motion: ScrollMotion(),
+                  children: [
+                    SlidableAction(
+                      onPressed: (ctx) {
+                        transactiondb.instance.deletetransaction(value.id!);
+                      },
+                      icon: Icons.delete,
+                      label: 'delete',
+                    )
+                  ],
+                ),
+                child: Card(
+                  elevation: 0,
+                  child: ListTile(
+                    leading: CircleAvatar(
+                        backgroundColor: value.type == categoryType.income
+                            ? Colors.green
+                            : Colors.red,
+                        radius: 45,
+                        child: Text(
+                          parsedate(value.date),
+                          textAlign: TextAlign.center,
+                        )),
+                    title: Text('Rs${value.amount}'),
+                    subtitle: Text(value.category.name),
+                  ),
                 ),
               );
             },
