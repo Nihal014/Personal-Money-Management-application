@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/model/category/category_model.dart';
+import 'package:flutter_application_1/model/transaction/transaction_model.dart';
 import 'package:flutter_application_1/screens/add_transaction_page.dart';
 import 'package:flutter_application_1/screens/home/screenHome.dart';
 import 'package:hive_flutter/adapters.dart';
@@ -15,6 +16,16 @@ Future<void> main() async {
   if (!Hive.isAdapterRegistered(categoryModelAdapter().typeId)) {
     Hive.registerAdapter(categoryModelAdapter());
   }
+
+
+
+ if (!Hive.isAdapterRegistered(transactionmodelAdapter().typeId)) {
+    Hive.registerAdapter(transactionmodelAdapter());
+  }
+
+
+
+
   runApp(const MyApp());
 }
 

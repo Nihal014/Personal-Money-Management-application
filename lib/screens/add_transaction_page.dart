@@ -3,6 +3,8 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_application_1/db/category_db.dart';
 import 'package:flutter_application_1/model/category/category_model.dart';
+import 'package:flutter_application_1/model/transaction/transaction_model.dart';
+import 'package:flutter_application_1/model/transaction/transactiondb.dart';
 
 class screenaddtransactionpage extends StatefulWidget {
   static const routeName = 'add-transaction';
@@ -21,6 +23,9 @@ class _screenaddtransactionpageState extends State<screenaddtransactionpage> {
 
   String? categoryid;
 
+  final purposetexteditingcontroller = TextEditingController();
+  final amounttexteditingcontroller = TextEditingController();
+
   @override
   void initState() {
     selected_categorytype = categoryType.income;
@@ -36,9 +41,11 @@ class _screenaddtransactionpageState extends State<screenaddtransactionpage> {
         child: Column(
           children: [
             TextFormField(
+              controller: purposetexteditingcontroller,
               decoration: InputDecoration(hintText: 'purpose'),
             ),
             TextFormField(
+              controller: amounttexteditingcontroller,
               decoration: InputDecoration(hintText: 'amount'),
               keyboardType: TextInputType.number,
             ),
@@ -108,6 +115,9 @@ class _screenaddtransactionpageState extends State<screenaddtransactionpage> {
                   return DropdownMenuItem(
                     value: e.id,
                     child: Text(e.name),
+                    onTap: () {
+                      selectedcategorymodel = e;
+                    },
                   );
                 }).toList(),
                 onChanged: (selectedvalue) {
@@ -117,10 +127,48 @@ class _screenaddtransactionpageState extends State<screenaddtransactionpage> {
                   });
                 }),
             ElevatedButton.icon(
-                onPressed: () {}, icon: Icon(Icons.check), label: Text('add'))
+                onPressed: () {
+                  addtransaction();
+                },
+                icon: Icon(Icons.check),
+                label: Text('SUBMIT'))
           ],
         ),
       )),
     );
+  }
+
+  Future<void> addtransaction() async {
+    final purposetext = purposetexteditingcontroller.text;
+    final amountext = amounttexteditingcontroller.text;
+    if (purposetext.isEmpty) {
+      return;
+    }
+    if (amountext.isEmpty) {
+      return;
+    }
+    if (categoryid == null) {
+      return;
+    }
+    if (selecteddate == null) {
+      return;
+    }
+    if (selectedcategorymodel == null) {
+      return;
+    }
+    final parsedamount = double.tryParse(amountext);
+    if (parsedamount == null) {
+      return;
+    }
+    final model = transactionmodel(
+        purpose: purposetext,
+        amount: parsedamount,
+        date: selecteddate!,
+        type: selected_categorytype!,
+        category: selectedcategorymodel!);
+
+    await transactiondb.instance.addtransaction(model);
+    Navigator.of(context).pop();
+    transactiondb.instance.refresh();
   }
 }
